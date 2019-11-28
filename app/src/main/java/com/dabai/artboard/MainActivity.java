@@ -14,10 +14,12 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.dabai.artboard.BoardBase.DoodleView;
 import com.flask.colorpicker.ColorPickerView;
@@ -42,8 +44,10 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog mShapeDialog;
 
 
+    Chip chip2, chip3, chip5;
+    private int lastSize, lastColor;
+    private DoodleView.ActionType lastAt;
 
-    Chip chip2,chip3,chip5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
         doodle_linelayout = findViewById(R.id.doodle_linelayout);
 
-
         chip2 = findViewById(R.id.chip2);
         chip3 = findViewById(R.id.chip3);
         chip5 = findViewById(R.id.chip5);
@@ -68,7 +71,26 @@ public class MainActivity extends AppCompatActivity {
 
         init();
 
-    }
+
+
+        if(!get_sharedString("f","t").equals("f")) {
+
+            new AlertDialog.Builder(this)
+                    .setTitle("帮助")
+                    .setMessage("音量键：显示/隐藏工具栏")
+                    .setCancelable(false)
+                    .setPositiveButton("了解", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            set_sharedString("f", "f");
+                        }
+                    })
+                    //.setNeutralButton("取消", null)
+                    .show();
+        }
+
+
+        }
 
     private void init() {
         //监听事件
@@ -83,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-            chip3.setOnLongClickListener(new View.OnLongClickListener() {
+        chip3.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
 
@@ -95,7 +117,39 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        lastSize = mDoodleView.getCurrentSize();
+        lastAt = mDoodleView.getmActionType();
+        lastColor = mDoodleView.getCurrentColor();
+        chip5.setText("橡皮擦");
 
+        chip5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (chip5.getText().equals("橡皮擦")) {
+
+                    chip5.setText("画笔");
+
+                    lastSize = mDoodleView.getCurrentSize();
+                    lastAt = mDoodleView.getmActionType();
+                    lastColor = mDoodleView.getCurrentColor();
+
+                    mDoodleView.setType(DoodleView.ActionType.Path);
+                    mDoodleView.setSize(100);
+                    mDoodleView.setColor("#ffffff");
+
+                } else {
+                    chip5.setText("橡皮擦");
+
+                    mDoodleView.setType(lastAt);
+                    mDoodleView.setSize(lastSize);
+                    mDoodleView.setColor(getHexString(lastColor));
+
+                }
+
+
+            }
+        });
 
 
     }
@@ -105,7 +159,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onTouchEvent(MotionEvent event) {
         return mDoodleView.onTouchEvent(event);
     }
-
 
 
     @Override
@@ -126,7 +179,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -137,43 +189,42 @@ public class MainActivity extends AppCompatActivity {
 
 // 按下键盘上返回按钮
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            Intent home=new Intent(Intent.ACTION_MAIN);
+            Intent home = new Intent(Intent.ACTION_MAIN);
             home.addCategory(Intent.CATEGORY_HOME);
             startActivity(home);
             return true;
 
-        }else if(keyCode == KeyEvent.KEYCODE_VOLUME_UP){
-            set_sharedString("tool","true");
+        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+            set_sharedString("tool", "true");
             f5();
             return true;
-        }
-        else if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN){
-            set_sharedString("tool","false");
+        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            set_sharedString("tool", "false");
             f5();
             return true;
-        }else {
+        } else {
             return super.onKeyDown(keyCode, event);
         }
 
     }
 
     private void f5() {
-        if (get_sharedString("tool","false").equals("true")){
+        if (get_sharedString("tool", "false").equals("true")) {
             toolcard.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             toolcard.setVisibility(View.GONE);
         }
 
 
-        chip2.setText("画笔大小:"+mDoodleView.getCurrentSize());
-        chip3.setText("画笔形状:"+mDoodleView.getmActionType());
+        chip2.setText("画笔大小:" + mDoodleView.getCurrentSize());
+        chip3.setText("画笔形状:" + mDoodleView.getmActionType());
 
     }
 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.main_color:
                 showColorDialog();
                 break;
@@ -206,14 +257,14 @@ public class MainActivity extends AppCompatActivity {
      * 显示选择画笔颜色的对话框
      */
     private void showColorDialog() {
-        if(mColorDialog == null){
+        if (mColorDialog == null) {
             mColorDialog = new AlertDialog.Builder(this)
                     .setTitle("选择颜色")
                     .setSingleChoiceItems(new String[]{"蓝色", "红色", "黑色"}, 0,
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    switch (which){
+                                    switch (which) {
                                         case 0:
                                             mDoodleView.setColor("#0000ff");
                                             break;
@@ -223,7 +274,8 @@ public class MainActivity extends AppCompatActivity {
                                         case 2:
                                             mDoodleView.setColor("#272822");
                                             break;
-                                        default:break;
+                                        default:
+                                            break;
                                     }
                                     dialog.dismiss();
                                 }
@@ -235,15 +287,15 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 显示选择画笔粗细的对话框
      */
-    private void showSizeDialog(){
-        if(mPaintDialog == null){
+    private void showSizeDialog() {
+        if (mPaintDialog == null) {
             mPaintDialog = new AlertDialog.Builder(this)
                     .setTitle("选择画笔粗细")
                     .setSingleChoiceItems(new String[]{"细", "中", "粗"}, 0,
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    switch (which){
+                                    switch (which) {
                                         case 0:
                                             mDoodleView.setSize(dip2px(5));
                                             break;
@@ -266,15 +318,15 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 显示选择画笔形状的对话框
      */
-    private void showShapeDialog(){
-        if(mShapeDialog == null){
+    private void showShapeDialog() {
+        if (mShapeDialog == null) {
             mShapeDialog = new AlertDialog.Builder(this)
                     .setTitle("选择形状")
-                    .setSingleChoiceItems(new String[]{"路径", "直线", "矩形", "圆形","实心矩形", "实心圆"}, 0,
+                    .setSingleChoiceItems(new String[]{"路径", "直线", "矩形", "圆形", "实心矩形", "实心圆"}, 0,
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    switch (which){
+                                    switch (which) {
                                         case 0:
                                             mDoodleView.setType(DoodleView.ActionType.Path);
                                             break;
@@ -303,9 +355,9 @@ public class MainActivity extends AppCompatActivity {
         mShapeDialog.show();
     }
 
-    private int dip2px(float dpValue){
+    private int dip2px(float dpValue) {
         final float scale = getResources().getDisplayMetrics().density;
-        return (int)(dpValue * scale + 0.5f);
+        return (int) (dpValue * scale + 0.5f);
     }
 
     private String getHexString(int color) {
@@ -315,7 +367,12 @@ public class MainActivity extends AppCompatActivity {
         return s;
     }
 
-    public void pen_color(View v){
+    public void pen_color(View v) {
+
+        if (chip5.getText().equals("画笔")) {
+            Toast.makeText(this, "橡皮擦模式不能修改!", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         ColorPickerDialogBuilder
                 .with(this)
@@ -375,29 +432,47 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void board_reset(View view) {
-        mDoodleView.reset();
 
-        mDoodleView.setColor("#000000");
-        mDoodleView.setType(DoodleView.ActionType.Path);
+        if (chip5.getText().equals("画笔")) {
+            Toast.makeText(this, "橡皮擦模式不能修改!", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        f5();
+        new MaterialDialog.Builder(this)
+                .title("警告")
+                .content("这将会重置你的画板，包括画板内容、画笔颜色、画笔形状、画笔大小!")
+                .positiveText("确认")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                        mDoodleView.reset();
+
+                        mDoodleView.setColor("#000000");
+                        mDoodleView.setType(DoodleView.ActionType.Path);
+                        mDoodleView.setSize(13);
+
+                        f5();
+                    }
+                })
+                .negativeText("取消")
+                .show();
     }
 
-    public void xiangpica(View view) {
-        //把笔设置为 背景色  起到 遮盖作用
-        mDoodleView.setColor("#ffffff");
-    }
 
     public void pen_size(View view) {
-
+        if (chip5.getText().equals("画笔")) {
+            Toast.makeText(this, "橡皮擦模式不能修改!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         new MaterialDialog.Builder(this)
                 .title("请输入画笔大小")
                 .inputType(InputType.TYPE_CLASS_NUMBER)
-                .input("", ""+mDoodleView.getCurrentSize(), new MaterialDialog.InputCallback() {
+                .input("", "" + mDoodleView.getCurrentSize(), new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(MaterialDialog dialog, CharSequence input) {
-                        mDoodleView.setSize(Integer.parseInt(""+input));
-                        chip2.setText("画笔大小:"+mDoodleView.getCurrentSize());
+                        mDoodleView.setSize(Integer.parseInt("" + input));
+                        chip2.setText("画笔大小:" + mDoodleView.getCurrentSize());
                     }
                 })
                 .positiveText("确定")
@@ -406,14 +481,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void pen_xingzhuang(View view) {
+        if (chip5.getText().equals("画笔")) {
+            Toast.makeText(this, "橡皮擦模式不能修改!", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         new MaterialDialog.Builder(this)
                 .title("选择画笔形状")
-                .items(new String[]{"路径", "直线", "矩形", "圆形","实心矩形", "实心圆"})
+                .items(new String[]{"路径", "直线", "矩形", "圆形", "实心矩形", "实心圆"})
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
                     public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        switch (which){
+                        switch (which) {
                             case 0:
                                 mDoodleView.setType(DoodleView.ActionType.Path);
                                 break;
@@ -435,11 +514,15 @@ public class MainActivity extends AppCompatActivity {
                             default:
                                 break;
                         }
-                        chip3.setText("画笔形状:"+mDoodleView.getmActionType());
+                        chip3.setText("画笔形状:" + mDoodleView.getmActionType());
                     }
                 })
                 .show();
     }
+
+
+
+
 
 }
 

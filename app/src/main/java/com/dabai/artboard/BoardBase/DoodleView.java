@@ -18,6 +18,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * 自定义的用于涂鸦的 View
@@ -223,9 +224,10 @@ public class DoodleView extends SurfaceView implements SurfaceHolder.Callback {
      * @param doodleView
      * @return 图片的保存路径
      */
-    public String saveBitmap(DoodleView doodleView) {
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath()
-                + "/doodleview/" + System.currentTimeMillis() + ".png";
+    public String saveBitmap(DoodleView doodleView,File file) {
+
+        String path = file.getAbsolutePath();
+
         if (!new File(path).exists()) {
             new File(path).getParentFile().mkdir();
         }
