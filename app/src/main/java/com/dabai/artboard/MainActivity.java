@@ -24,12 +24,16 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.dabai.artboard.BoardBase.BaseAction;
 import com.dabai.artboard.BoardBase.DoodleView;
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.OnColorSelectedListener;
 import com.flask.colorpicker.builder.ColorPickerClickListener;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 import com.google.android.material.chip.Chip;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -47,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog mShapeDialog;
 
 
-    Chip chip2, chip3, chip5;
+    Chip chip1,chip2, chip3, chip5;
     private int lastSize, lastColor;
     private DoodleView.ActionType lastAt;
 
@@ -66,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
         doodle_linelayout = findViewById(R.id.doodle_linelayout);
 
+        chip1 = findViewById(R.id.chip1);
         chip2 = findViewById(R.id.chip2);
         chip3 = findViewById(R.id.chip3);
         chip5 = findViewById(R.id.chip5);
@@ -108,6 +113,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void init() {
         //监听事件
+        chip1.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+                mDoodleView.setColor("#000000");
+                f5();
+
+                Toast.makeText(MainActivity.this, "画笔颜色已经恢复默认!", Toast.LENGTH_SHORT).show();
+
+                return true;
+            }
+        });
+
 
         chip2.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -175,29 +193,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
     @Override
     protected void onResume() {
         super.onResume();
-/*
-        getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE);
-
-*/
-
-        f5();
+        
+         f5();
     }
 
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-    }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 

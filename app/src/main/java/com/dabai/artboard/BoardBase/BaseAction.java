@@ -11,7 +11,7 @@ import android.graphics.Path;
  * Created by developerHaoz on 2017/7/12.
  */
 
-abstract class BaseAction {
+public abstract class BaseAction {
 
     public int color;
 

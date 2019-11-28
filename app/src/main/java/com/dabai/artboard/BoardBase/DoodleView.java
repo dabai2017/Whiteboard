@@ -60,6 +60,8 @@ public class DoodleView extends SurfaceView implements SurfaceHolder.Callback {
     private List<BaseAction> mBaseActions;
     private List<BaseAction> mUndoActions;
 
+
+
     private Bitmap mBitmap;
 
     private ActionType mActionType = ActionType.Path;
@@ -82,6 +84,9 @@ public class DoodleView extends SurfaceView implements SurfaceHolder.Callback {
 
 
     private void init() {
+        mBaseActions = new ArrayList<>();
+        mUndoActions = new ArrayList<>();
+
         mSurfaceHolder = this.getHolder();
         mSurfaceHolder.addCallback(this);
         this.setFocusable(true);
@@ -302,9 +307,12 @@ public class DoodleView extends SurfaceView implements SurfaceHolder.Callback {
 
     }
 
+
+
     /**
      * 前进
      */
+
     public void forward() {
 
         if (mUndoActions.size() != 0) {
@@ -343,6 +351,7 @@ public class DoodleView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void setmBaseActions(List<BaseAction> mBaseActions) {
         this.mBaseActions = mBaseActions;
+        f5();
     }
 
     public void setmUndoActions(List<BaseAction> mUndoActions) {
