@@ -1,10 +1,13 @@
 package com.dabai.artboard;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.KeyEvent;
@@ -83,6 +86,17 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             set_sharedString("f", "f");
+
+
+                             //检查代码是否拥有这个权限
+                            int checkResult = getApplicationContext().checkCallingOrSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                            //if(!=允许),抛出异常
+                            if (checkResult!= PackageManager.PERMISSION_GRANTED){
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1); // 动态申请读取权限
+                                }
+                            }else {
+                            }
                         }
                     })
                     //.setNeutralButton("取消", null)

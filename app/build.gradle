@@ -7,7 +7,7 @@ android {
         applicationId "com.dabai.artboard"
         minSdkVersion 15
         targetSdkVersion 29
-        versionCode 10
+        versionCode 15
         versionName "1.0_"+versionCode
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
