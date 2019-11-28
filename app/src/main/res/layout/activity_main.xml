@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:id="@+id/cons"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tool_cardlayout"
+            app:cardElevation="10dp"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:background="#FFFFFF"
+                >
+
+                <!--ChipGroup 默认状态，会换行，可多选-->
+                <com.google.android.material.chip.ChipGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    app:chipSpacingVertical="10dp"
+                    app:chipSpacingHorizontal="10dp"
+                    >
+
+                    <com.google.android.material.chip.Chip
+                        app:chipBackgroundColor="@color/colorAccent"
+                        android:textColor="#ffffff"
+                        style="@style/Widget.MaterialComponents.Chip.Action"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="画笔颜色"
+                        android:onClick="pen_color"
+                        android:textAppearance="?android:textAppearanceMedium" />
+
+
+                    <com.google.android.material.chip.Chip
+                        app:chipBackgroundColor="@color/colorAccent"
+                        android:textColor="#ffffff"
+                        style="@style/Widget.MaterialComponents.Chip.Action"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="画笔大小:5"
+                        android:onClick="pen_size"
+                        android:id="@+id/chip2"
+                        android:textAppearance="?android:textAppearanceMedium" />
+
+
+                    <com.google.android.material.chip.Chip
+                        app:chipBackgroundColor="@color/colorAccent"
+                        android:textColor="#ffffff"
+                        style="@style/Widget.MaterialComponents.Chip.Action"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="画笔形状:基础"
+                        android:id="@+id/chip3"
+                        android:onClick="pen_xingzhuang"
+                        android:textAppearance="?android:textAppearanceMedium" />
+
+
+                    <com.google.android.material.chip.Chip
+                        app:chipBackgroundColor="@color/colorAccent"
+                        android:textColor="#ffffff"
+                        style="@style/Widget.MaterialComponents.Chip.Action"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="橡皮擦"
+                        android:id="@+id/chip5"
+                        android:onClick="xiangpica"
+                        android:textAppearance="?android:textAppearanceMedium" />
+
+
+                    <com.google.android.material.chip.Chip
+                        app:chipBackgroundColor="@color/colorAccent"
+                        android:textColor="#ffffff"
+                        style="@style/Widget.MaterialComponents.Chip.Action"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="重置"
+                        android:onClick="board_reset"
+                        android:textAppearance="?android:textAppearanceMedium" />
+
+
+                    <com.google.android.material.chip.Chip
+                        app:chipBackgroundColor="@color/colorAccent"
+                        android:textColor="#ffffff"
+                        style="@style/Widget.MaterialComponents.Chip.Action"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="后退"
+                        android:onClick="board_undo"
+                        android:textAppearance="?android:textAppearanceMedium" />
+
+
+                    <com.google.android.material.chip.Chip
+                        app:chipBackgroundColor="@color/colorAccent"
+                        android:textColor="#ffffff"
+                        style="@style/Widget.MaterialComponents.Chip.Action"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="前进"
+                        android:onClick="board_forward"
+                        android:textAppearance="?android:textAppearanceMedium" />
+
+
+                    <com.google.android.material.chip.Chip
+                        app:chipBackgroundColor="@color/colorAccent"
+                        android:textColor="#ffffff"
+                        style="@style/Widget.MaterialComponents.Chip.Action"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="保存到图库"
+                        android:onClick="pen_color"
+                        android:textAppearance="?android:textAppearanceMedium" />
+
+
+                    <com.google.android.material.chip.Chip
+                        app:chipBackgroundColor="@color/colorAccent"
+                        android:textColor="#ffffff"
+                        style="@style/Widget.MaterialComponents.Chip.Action"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="发送给好友"
+                        android:onClick="pen_color"
+                        android:textAppearance="?android:textAppearanceMedium" />
+
+                </com.google.android.material.chip.ChipGroup>
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/doodle_linelayout"
+            android:background="#ffffff"
+            >
+
+            <com.dabai.artboard.BoardBase.DoodleView
+                android:id="@+id/doodle_doodleview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
